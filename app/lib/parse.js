@@ -1,3 +1,9 @@
+/** 
+ * File Name: Parse.js
+ * Purpose: Check output data from jet_facts.csv after being parsed by csv-parser.
+ * Created Date: 2024-03-12 
+ */ 
+
 const csvParser = require('csv-parser');
 const fs = require('fs');
 
