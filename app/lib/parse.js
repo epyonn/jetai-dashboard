@@ -1,5 +1,5 @@
 /** 
- * File Name: Parse.js
+ * File Name: parse.js
  * Purpose: Check output data from jet_facts.csv after being parsed by csv-parser.
  * Created Date: 2024-03-12 
  */ 
