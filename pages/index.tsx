@@ -5,30 +5,35 @@
  */ 
 import { GetServerSideProps } from 'next';
 import React, { useEffect, useState } from 'react';
-import { fetchJets, fetchJetByWingspan, fetchJetsByYear } from '@/app/api/data';
+import { fetchJets, fetchJetByWingspan, fetchJetsByYear, fetchJetsByEngine } from '@/app/api/data';
 import { Jet } from '@/app/types/types';
+import { FaArrowDown } from 'react-icons/fa'; // Import the arrow icon
 import Dashboard from '@/app/components/Dashboard';
 import '@/app/styling/global.css';
 
 type Props = {
   jets: Jet[];
-  largestWingspan: Jet[];
-  
+  sortWingspan: Jet[];
+  sortYear: Jet[];
+  sortEngine: Jet[];
 };
 
 // function asynchronously fetches server rendered data
 export const getServerSideProps: GetServerSideProps = async () => {
+  
   // fetches all jets data in parallel to streamline
-  const [jets, largestWingspan ] = await Promise.all ([
+  const [jets, sortWingspan, sortYear, sortEngine ] = await Promise.all ([
     fetchJets(),
     fetchJetByWingspan(),
+    fetchJetsByYear(),
+    fetchJetsByEngine()
   ])
   return {
-    props: { jets, largestWingspan },
+    props: { jets, sortWingspan, sortYear, sortEngine },
   };
 };
 
-const HomePage = ({ jets: initialJets, largestWingspan }: Props) => {
+const HomePage = ({ jets: initialJets, sortWingspan, sortYear, sortEngine }: Props) => {
   // state variables
   const [jetsData, setJetsData] = useState<Jet[]>(initialJets);
   const [sort, setSort] = useState<string>('');
@@ -41,12 +46,15 @@ const HomePage = ({ jets: initialJets, largestWingspan }: Props) => {
       let sortedJets;
       switch (sort) {
         case 'wingspan':
-          sortedJets = largestWingspan;
+          sortedJets = sortWingspan;
           console.log('being clicked');
-          console.log(largestWingspan);
+          console.log(sortWingspan);
           break;
         case 'year':
-          sortedJets = await fetchJetsByYear();
+          sortedJets = sortYear;
+          break;
+        case 'engine':
+          sortedJets = sortEngine;
           break;
         default:
           sortedJets = initialJets;
@@ -69,32 +77,44 @@ const HomePage = ({ jets: initialJets, largestWingspan }: Props) => {
   };
 
   // create table columns
-  const tableColumns: { header: string; dataKey: keyof Jet }[] = [
+  const tableColumns: { header: string; dataKey: keyof Jet, sortAction?: () => void }[] = [
     { header: 'ID', dataKey: 'id' },
     { header: 'Name', dataKey: 'name' },
-    { header: 'Wingspan (m)', dataKey: 'wingspan' },
-    { header: 'Engines', dataKey: 'engines' },
-    { header: 'Year', dataKey: 'year' },
+    { 
+      header: 'Wingspan (m)', 
+      dataKey: 'wingspan', 
+      sortAction: () => setSort('wingspan') // Set sort action for wingspan
+    },
+    { 
+      header: 'Engines', 
+      dataKey: 'engines', 
+      sortAction: () => setSort('engine') // Set sort action for engine
+    },
+    { 
+      header: 'Year', 
+      dataKey: 'year',
+      sortAction: () => setSort('year') // Set sort action for year
+    },
   ];
 
   return (
-    <div className='flex flex-col items-center h-screen w-screen p-5'>
-      <h1>Top 10 Jet Inventory</h1>
-      
-      <button onClick={() => setSort('wingspan')} className="mb-4 px-4 py-2 bg-blue-500 text-white rounded">
-        Sort by Wingspan
-      </button>
-      <button onClick={() => setSort('year')} className="mb-4 ml-2 px-4 py-2 bg-green-500 text-white rounded">
-        Sort by Year
-      </button>
+  <div className='flex flex-col items-center h-screen w-screen p-5'>
+    <h1 className="text-blue-500 font-bold text-lg p-3">Top 10 Jets</h1>
 
-      <div className="overflow-x-auto">
-      <table className="min-w-full table-auto divide-y divide-gray-200 shadow-md">
-        <thead className="bg-gray-50">
+    <div className="overflow-x-auto ">
+      <table className="min-w-full table-auto divide-y divide-gray-200 shadow-lg border border-gray-200" >
+        <thead className="bg-gray-100">
           <tr>
-            {tableColumns.map(({ header }) => (
+            {tableColumns.map(({ header, sortAction }) => (
               <th key={header} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 {header}
+                {sortAction && (
+                    <FaArrowDown 
+                    onClick={sortAction} 
+                    className="ml-2 text-blue-500" // Uses tailwindcss for color, adjust as needed
+                    style={{ display: 'inline', cursor: 'pointer' }}
+                  />
+                )}
               </th>
             ))}
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Select</th>
@@ -119,17 +139,36 @@ const HomePage = ({ jets: initialJets, largestWingspan }: Props) => {
           ))}
         </tbody>
       </table>
-      <div>
-        <h2>Checked Jets:</h2>
-        <ul>
-          {checkedJets.map((checkedJet) => (
-            <li key={checkedJet.id}>{checkedJet.name}</li>
-          ))}
-        </ul>
-      </div>
     </div>
-    </div>
-  );
-};
 
-export default HomePage;
+    <div className='flex flex-row items-center gap-4 m-2'>
+      <label htmlFor="comparisonCriteria" className="block text-sm font-medium text-gray-700">
+        Ask OpenAI to Compare Selected Jets by
+      </label>
+      <div>
+        <select className="border border-gray-300 rounded-md p-2 w-40" name="comparisonCriteria" id="comparisonCriteria">
+          <option value="wingspan">Wingspan</option>
+          <option value="engine">Engine</option>
+          <option value="year">Year</option>
+        </select>
+      </div>
+      <button className="py-2 px-4 bg-blue-500 text-white rounded-md shadow">
+        Compare Selected Jets
+      </button>
+    </div>
+
+    
+    <div>
+      <h2>Checked Jets:</h2>
+      <ul>
+        {checkedJets.map((checkedJet) => (
+          <li key={checkedJet.id}>{checkedJet.name}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+    );
+  };
+
+  export default HomePage;
