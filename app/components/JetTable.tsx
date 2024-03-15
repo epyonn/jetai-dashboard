@@ -1,7 +1,7 @@
 /** 
  * File Name: JetTable.tsx
  * Purpose: Renders a dynamic table displaying jet data, including functionality for sorting by various columns and selecting jets for comparison. 
- * Created Date: 2024-03-12 
+ * Created Date: 2024-03-14
  */
 import React from 'react';
 import { Jet } from '@/app/types/types';
