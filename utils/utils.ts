@@ -3,7 +3,7 @@
  * Purpose: Contains utility functions for interacting with the OpenAI API to generate comparison prompts based on selected jets and their criteria. 
  * Created Date: 2024-03-14
  */
-import { Jet } from '@/app/types/types';
+import { Jet } from '@/types/types';
 import axios from 'axios';
 
 // function to construct a prompt for the OpenAI API

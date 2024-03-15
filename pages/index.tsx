@@ -6,14 +6,14 @@
 import { GetServerSideProps } from 'next';
 import React, { useEffect, useState } from 'react';
 import { fetchJets, fetchJetByWingspan, fetchJetsByYear, fetchJetsByEngine } from '@/pages/api/data';
-import { Jet , Props} from '@/app/types/types';
-import JetTable from '@/app/components/JetTable';
-import ComparisonSelector from '@/app/components/ComparisonSelector';
-import ComparisonResults from '@/app/components/ComparisonResults';
-import '../global.css';
+import { Jet , Props} from '@/types/types';
+import JetTable from '@/components/JetTable';
+import ComparisonSelector from '@/components/ComparisonSelector';
+import ComparisonResults from '@/components/ComparisonResults';
 
 
-import { handleSubmit } from '@/app/utils/utils'; // Adjust the import path as necessary
+
+import { handleSubmit } from '@/utils/utils'; // Adjust the import path as necessary
 
 // function asynchronously fetches server side rendered data
 export const getServerSideProps: GetServerSideProps = async () => {

@@ -4,7 +4,7 @@
  * Created Date: 2024-03-14 
  */
 import React from 'react';
-import { ComparisonResult } from '@/app/types/types'; 
+import { ComparisonResult } from '@/types/types'; 
 
 interface ComparisonResultsProps {
   results: ComparisonResult[]; 

@@ -4,7 +4,7 @@
  * Created Date: 2024-03-14
  */
 import React from 'react';
-import { Jet } from '@/app/types/types';
+import { Jet } from '@/types/types';
 import { FaArrowDown } from 'react-icons/fa';
 
 interface JetTableProps {
