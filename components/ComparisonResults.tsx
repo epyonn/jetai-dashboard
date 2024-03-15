@@ -2,7 +2,6 @@
 * Purpose: Renders a table displaying the comparison results of jets, including their rank, name, and value, based on a selected comparison criteria.
 * Created Date: 2024-03-14 
 */
-
 import React from 'react';
 import { ComparisonResult } from '@/types/types'; 
 
