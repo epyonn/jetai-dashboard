@@ -10,9 +10,8 @@ import { Jet , Props} from '@/types/types';
 import JetTable from '@/components/JetTable';
 import ComparisonSelector from '@/components/ComparisonSelector';
 import ComparisonResults from '@/components/ComparisonResults';
-
-
-
+import ChartComponent from '@/components/ChartComponent';
+import BarChart from '@/components/BarChart';
 import { handleSubmit } from '@/utils/utils'; // Adjust the import path as necessary
 
 // function asynchronously fetches server side rendered data
@@ -100,23 +99,46 @@ const HomePage = ({ jets: initialJets, sortWingspan, sortYear, sortEngine }: Pro
     },
   ];
 
+
   return (
-  <div className='flex flex-col items-center h-screen w-screen p-5 '>
-    <label className="text-blue-500 font-bold text-xl p-3">Top 10 Jets</label>
-    <JetTable
-      jetsData={jetsData}
-      checkedJets={checkedJets}
-      tableColumns={tableColumns}
-      handleCheckboxChange={handleCheckboxChange}
-    />
-    <ComparisonSelector
-        comparison={comparison}
-        setComparison={setComparison}
-        handleFormSubmit={handleFormSubmit}
-    />
-    <ComparisonResults results={response} />
-  </div>
-    );
+    <div className='flex flex-row items-center justify-center min-h-screen'>
+      <div className='flex flex-col items-center justify-center w-full p-4 md:p-10 lg:h-3/4 lg:w-3/4 border border-gray-200 shadow-lg rounded-lg overflow-auto'>
+        <div className='flex flex-col md:flex-row gap-4 w-full'>
+          <div className="w-full lg:flex-1 flex flex-col gap-4">
+            <div>
+              <ChartComponent jetsData={jetsData} sort={sort}/>
+            </div>
+            <div className="overflow-auto">
+              <label className="text-blue-500 font-bold text-xl p-3 items-center">Top 10 Jets</label>
+              <div className="overflow-auto h-80">
+                <JetTable
+                  jetsData={jetsData}
+                  checkedJets={checkedJets}
+                  tableColumns={tableColumns}
+                  handleCheckboxChange={handleCheckboxChange}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="w-full lg:flex-1 flex flex-col gap-4">
+            <div>
+              <ComparisonSelector
+                comparison={comparison}
+                setComparison={setComparison}
+                handleFormSubmit={handleFormSubmit}
+              />
+            </div>
+            <div>
+              <ComparisonResults results={response} />
+            </div>
+            <div>
+              <BarChart responseData={response} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
   };
 
   export default HomePage;
