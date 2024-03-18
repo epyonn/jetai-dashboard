@@ -5,6 +5,8 @@
  */
 
 import React from 'react';
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 import { Bar } from 'react-chartjs-2';
 
 const BarChart = ({ responseData }) => {
