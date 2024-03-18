@@ -16,13 +16,13 @@ const ComparisonSelector: React.FC<ComparisonSelectionFormProps> = ({
   setComparison,
   handleFormSubmit,
 }) => (
-  <div className='flex flex-row items-center gap-4 m-3'>
-    <label htmlFor="comparisonCriteria" className="block text-sm font-medium text-gray-700">
+  <div className='flex flex-row items-center gap-4 m-3 flex-nowrap'>
+    <label htmlFor="comparisonCriteria" className=" text-sm font-medium text-gray-700 whitespace-nowrap">
       Ask OpenAI to Compare Selected Jets by
     </label>
     <div>
       <select
-        className="border border-gray-300 rounded-md p-2 w-40"
+        className="border border-gray-300 rounded-md p-2 w-30 text-sm md:w-40"
         name="comparisonCriteria"
         id="comparisonCriteria"
         value={comparison}
@@ -33,7 +33,7 @@ const ComparisonSelector: React.FC<ComparisonSelectionFormProps> = ({
         <option value="Maximum Seats">Maximum Seats</option>
       </select>
     </div>
-    <button onClick={handleFormSubmit} className="py-2 px-4 bg-blue-500 text-white rounded-md shadow">
+    <button onClick={handleFormSubmit} className=" text-sm w-30  md:py-2 md:px-1 bg-blue-500 text-white rounded-md shadow">
       Compare Selected Jets
     </button>
   </div>

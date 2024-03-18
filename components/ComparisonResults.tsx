@@ -10,7 +10,7 @@ interface ComparisonResultsProps {
 }
 
 const ComparisonResults: React.FC<ComparisonResultsProps> = ({ results }) => (
-  <div className="flex flex-col w-full md:w-1/2 lg:w-1/4 mx-auto">
+  <div className="flex flex-col w-full md:w-1/2 lg:w-full mx-auto ">
     <label className="block text-sm font-medium text-gray-700">Comparison Results:</label>
     <div className="overflow-x-auto rounded-md">
       <table className="min-w-full table-auto divide-y divide-gray-200 shadow-lg border border-gray-200 rounded-md">
